@@ -27,12 +27,13 @@ public class ClientMain extends Application{
     }
 
     public void setUpNetworking() throws Exception{
-        Socket sock = new Socket("10.148.226.194", 5000); //this is my local IP address
+        Socket sock = new Socket("localhost", 5000); //this is my local IP address
         InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
         reader = new BufferedReader(streamReader);
         writer = new PrintWriter(sock.getOutputStream());
         Thread readerThread = new Thread(new IncomingReader());
         readerThread.start();
+        text.setText("Established connection");
 
     }
 
@@ -44,6 +45,7 @@ public class ClientMain extends Application{
         chat.getChildren().add(text);
         primaryStage.setScene(new Scene(chat, 550, 380));
         primaryStage.show();
+        setUpNetworking();
     }
 
 
