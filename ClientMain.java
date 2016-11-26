@@ -1,11 +1,16 @@
 package assignment7;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -46,6 +51,7 @@ public class ClientMain extends Application{
 
     public void login(Stage primaryStage) {
         AnchorPane loginScreen = new AnchorPane();
+        Scene scene = new Scene(loginScreen, 305, 185);
         primaryStage.setTitle("Login");
         Label heading = new Label("LOGIN");
         loginScreen.getChildren().add(heading);
@@ -70,7 +76,31 @@ public class ClientMain extends Application{
         setTopAnchor(passwordInfo, 100.0);
         loginScreen.getChildren().add(passwordInfo);
 
-        primaryStage.setScene(new Scene(loginScreen, 305, 185));
+        Text forgot = new Text("I forgot my password");
+        forgot.setFont(Font.font(11));
+        setLeftAnchor(forgot, 144.0);
+        setTopAnchor(forgot, 127.0);
+        loginScreen.getChildren().add(forgot);
+
+        forgot.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                forgot.setUnderline(true);
+                scene.setCursor(Cursor.HAND);
+            }
+        });
+
+        forgot.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                forgot.setUnderline(false);
+                scene.setCursor(Cursor.DEFAULT);
+            }
+        });
+
+
+        primaryStage.setScene(scene);
+
         primaryStage.show();
     }
 
