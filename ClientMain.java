@@ -1,14 +1,18 @@
 package assignment7;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -17,6 +21,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Iterator;
+import java.util.Set;
 
 import static javafx.scene.layout.AnchorPane.setLeftAnchor;
 import static javafx.scene.layout.AnchorPane.setTopAnchor;
@@ -29,6 +35,7 @@ public class ClientMain extends Application{
 
     public static void main(String[] args) {
         try {
+            Map.UsernamePasswordMap.put("default", "default"); //for testing purposes
             ClientMain.launch(ClientMain.class);
         }
         catch (Exception e) {
@@ -51,7 +58,7 @@ public class ClientMain extends Application{
 
     public void login(Stage primaryStage) {
         AnchorPane loginScreen = new AnchorPane();
-        Scene scene = new Scene(loginScreen, 305, 185);
+        Scene scene = new Scene(loginScreen, 335, 220);
         primaryStage.setTitle("Login");
         Label heading = new Label("LOGIN");
         loginScreen.getChildren().add(heading);
@@ -68,7 +75,8 @@ public class ClientMain extends Application{
         loginScreen.getChildren().add(usernameInfo);
 
         Label password = new Label("Password: ");
-        TextField getPassword = new TextField();
+        PasswordField getPassword = new PasswordField();
+        getPassword.setPromptText("Enter your password");
         HBox passwordInfo = new HBox();
         passwordInfo.getChildren().addAll(password, getPassword);
         passwordInfo.setSpacing(5.0);
@@ -98,12 +106,129 @@ public class ClientMain extends Application{
             }
         });
 
+        forgot.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                primaryStage.close();
+                Stage stage = new Stage();
+                stage.setTitle("Forgot password");
+                AnchorPane forgotPassword = new AnchorPane();
+                Scene scene = new Scene(forgotPassword, 350, 250);
+                Label title = new Label("Password Retrieval");
+                forgotPassword.getChildren().add(title);
+                setLeftAnchor(title, 110.0);
+                setTopAnchor(title, 10.0);
+
+                Label username = new Label("Enter Username: ");
+                TextField getUsername = new TextField();
+                HBox usernameInfo = new HBox();
+                usernameInfo.getChildren().addAll(username, getUsername);
+                usernameInfo.setSpacing(5.0);
+                setLeftAnchor(usernameInfo, 37.0);
+                setTopAnchor(usernameInfo, 50.0);
+                forgotPassword.getChildren().add(usernameInfo);
+
+                Label password = new Label("Enter new password: ");
+                PasswordField getPassword = new PasswordField();
+                getPassword.setPromptText("Enter your password");
+                HBox passwordInfo = new HBox();
+                passwordInfo.getChildren().addAll(password, getPassword);
+                passwordInfo.setSpacing(5.0);
+                setLeftAnchor(passwordInfo, 15.0);
+                setTopAnchor(passwordInfo, 100.0);
+                forgotPassword.getChildren().add(passwordInfo);
+
+                Button confirm = new Button("Confirm");
+                forgotPassword.getChildren().add(confirm);
+                setLeftAnchor(confirm, 130.0);
+                setTopAnchor(confirm, 150.0);
+                Label confirmed = new Label("Password change confirmed");
+                confirmed.setVisible(false);
+                confirmed.setTextFill(Color.GREEN);
+                setLeftAnchor(confirmed, 192.0);
+                setTopAnchor(confirmed, 154.0);
+                forgotPassword.getChildren().add(confirmed);
+                confirm.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String name = getUsername.getText();
+                        String newPass = getPassword.getText();
+                        Map.change(name, newPass);
+                        confirmed.setVisible(true);
+                    }
+                });
+
+                Button back = new Button("Back to Login page");
+                forgotPassword.getChildren().add(back);
+                setLeftAnchor(back, 100.0);
+                setTopAnchor(back, 190.0);
+                back.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        stage.close();
+                        primaryStage.show();
+
+                    }
+                });
+
+                stage.setScene(scene);
+                stage.show();
+            }
+        });
+
+        Button login = new Button("Log In");
+        Button signUp = new Button("Sign Up");
+        HBox buttons = new HBox();
+        buttons.getChildren().addAll(login, signUp);
+        buttons.setSpacing(20.0);
+        setLeftAnchor(buttons, 110.0);
+        setTopAnchor(buttons, 152.0);
+        loginScreen.getChildren().add(buttons);
+
+        Label warning = new Label("Please try again");
+        setTopAnchor(warning, 175.0);
+        setLeftAnchor(warning, 115.0);
+        warning.setTextFill(Color.RED);
+        warning.setVisible(false);
+        loginScreen.getChildren().add(warning);
+
+        login.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String u = getUsername.getText();
+                String p = getPassword.getText();
+                boolean valid = processLogin(u, p);
+                if (valid) {
+                    warning.setText("Welcome");
+                    warning.setVisible(true);
+                }
+                else {
+                    warning.setVisible(true);
+                }
+            }
+        });
 
         primaryStage.setScene(scene);
 
         primaryStage.show();
     }
 
+    public boolean processLogin(String username, String password) {
+        Set<String> keys = Map.UsernamePasswordMap.keySet();
+        Iterator<String> iterator = keys.iterator();
+
+        while (iterator.hasNext()) {
+            String current = iterator.next();
+            if (current.equals(username)) {
+                String p = Map.UsernamePasswordMap.get(current);
+                if (p.equals(password)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
     public void setUpNetworking() throws Exception{
         Socket sock = new Socket("localhost", 5000); //to talk to my own computer
         InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());

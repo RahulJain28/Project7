@@ -8,4 +8,8 @@ import java.util.HashMap;
  */
 public class Map {
     public static HashMap<String, String> UsernamePasswordMap = new HashMap<>();
+
+    public static void change(String username, String password) {
+        UsernamePasswordMap.put(username, password);
+    }
 }
