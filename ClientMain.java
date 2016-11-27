@@ -106,6 +106,9 @@ public class ClientMain extends Application{
             }
         });
 
+        /**
+         * This handles the entire changing password aspect of the program
+         */
         forgot.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -114,7 +117,7 @@ public class ClientMain extends Application{
                 stage.setTitle("Forgot password");
                 AnchorPane forgotPassword = new AnchorPane();
                 Scene scene = new Scene(forgotPassword, 350, 250);
-                Label title = new Label("Password Retrieval");
+                Label title = new Label("Password Change");
                 forgotPassword.getChildren().add(title);
                 setLeftAnchor(title, 110.0);
                 setTopAnchor(title, 10.0);
@@ -153,7 +156,7 @@ public class ClientMain extends Application{
                     public void handle(ActionEvent event) {
                         String name = getUsername.getText();
                         String newPass = getPassword.getText();
-                        Map.change(name, newPass);
+                        Map.addOrChange(name, newPass);
                         confirmed.setVisible(true);
                     }
                 });
@@ -184,6 +187,80 @@ public class ClientMain extends Application{
         setLeftAnchor(buttons, 110.0);
         setTopAnchor(buttons, 152.0);
         loginScreen.getChildren().add(buttons);
+        signUp.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaryStage.close();
+                Stage stage = new Stage();
+                stage.setTitle("New User Register");
+                AnchorPane signUp = new AnchorPane();
+                Scene scene = new Scene(signUp, 350, 250);
+                Label title = new Label("Register");
+                signUp.getChildren().add(title);
+                setLeftAnchor(title, 110.0);
+                setTopAnchor(title, 10.0);
+
+                Label username = new Label("Enter Username: ");
+                TextField getUsername = new TextField();
+                HBox usernameInfo = new HBox();
+                usernameInfo.getChildren().addAll(username, getUsername);
+                usernameInfo.setSpacing(5.0);
+                setLeftAnchor(usernameInfo, 37.0);
+                setTopAnchor(usernameInfo, 50.0);
+                signUp.getChildren().add(usernameInfo);
+
+                Label password = new Label("Enter password: ");
+                PasswordField getPassword = new PasswordField();
+                getPassword.setPromptText("Enter your password");
+                HBox passwordInfo = new HBox();
+                passwordInfo.getChildren().addAll(password, getPassword);
+                passwordInfo.setSpacing(5.0);
+                setLeftAnchor(passwordInfo, 35.0);
+                setTopAnchor(passwordInfo, 100.0);
+                signUp.getChildren().add(passwordInfo);
+
+                Button finish = new Button("Sign Up");
+                signUp.getChildren().add(finish);
+                setLeftAnchor(finish, 130.0);
+                setTopAnchor(finish, 150.0);
+                Label confirmed = new Label("Registration confirmed");
+                confirmed.setVisible(false);
+                confirmed.setTextFill(Color.GREEN);
+                setLeftAnchor(confirmed, 192.0);
+                setTopAnchor(confirmed, 154.0);
+                signUp.getChildren().add(confirmed);
+                finish.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String name = getUsername.getText();
+                        String newPass = getPassword.getText();
+                        Map.addOrChange(name, newPass);
+                        confirmed.setVisible(true);
+
+//                        String name = getUsername.getText();
+//                        String newPass = getPassword.getText();
+//                        Map.change(name, newPass);
+//                        confirmed.setVisible(true);
+                    }
+                });
+
+                Button back = new Button("Back to Login page");
+                signUp.getChildren().add(back);
+                setLeftAnchor(back, 100.0);
+                setTopAnchor(back, 190.0);
+                back.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        stage.close();
+                        primaryStage.show();
+
+                    }
+                });
+
+                stage.setScene(scene);
+                stage.show();
+            }
+        });
 
         Label warning = new Label("Please try again");
         setTopAnchor(warning, 175.0);
