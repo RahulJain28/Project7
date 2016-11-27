@@ -65,6 +65,17 @@ public class ClientMain extends Application{
         setLeftAnchor(heading, 130.0);
         setTopAnchor(heading, 10.0);
 
+        Button quit = new Button("Quit");
+        loginScreen.getChildren().add(quit);
+        setLeftAnchor(quit, 280.0);
+        setTopAnchor(quit, 10.0);
+        quit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+
         Label username = new Label("Username: ");
         TextField getUsername = new TextField();
         HBox usernameInfo = new HBox();
