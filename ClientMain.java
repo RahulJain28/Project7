@@ -35,7 +35,10 @@ public class ClientMain extends Application{
 
     public static void main(String[] args) {
         try {
-            Map.UsernamePasswordMap.put("default", "default"); //for testing purposes
+            Map.addOrChange("default", "default"); //for testing purposes
+            Map.addOrChange("a", "default"); //for testing purposes
+            Map.addOrChange("b", "default"); //for testing purposes
+            Map.addOrChange("c", "default"); //for testing purposes
             ClientMain.launch(ClientMain.class);
         }
         catch (Exception e) {
@@ -287,10 +290,17 @@ public class ClientMain extends Application{
                 String p = getPassword.getText();
                 boolean valid = processLogin(u, p);
                 if (valid) {
-                    warning.setText("Welcome");
+                    warning.setText("Logged In");
+                    ChatRoom chatroom = new ChatRoom(u);
+                    try {
+						chatroom.start(new Stage());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
                     warning.setVisible(true);
                 }
                 else {
+                	warning.setText("Username/Password incorrect");
                     warning.setVisible(true);
                 }
             }
