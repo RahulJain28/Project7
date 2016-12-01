@@ -1,48 +1,31 @@
+/**
+ * Project 7 Chat Room
+ * EE 422C submission by
+ * Aditya Kharosekar amk3587
+ * Rahul Jain rj8656
+ * Fall 2016
+ * Slip days used - 1 (on this project) (overall - 2)
+ * This is the second slip day that we have used this semester
+ */
 package assignment7;
-import static javafx.scene.layout.AnchorPane.setLeftAnchor;
-import static javafx.scene.layout.AnchorPane.setTopAnchor;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 import static javafx.scene.layout.AnchorPane.setLeftAnchor;
 import static javafx.scene.layout.AnchorPane.setTopAnchor;
-import java.util.Set;
-
-import javafx.*;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 public class ChatRoom extends Application{
 	String username;

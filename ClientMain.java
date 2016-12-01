@@ -1,3 +1,12 @@
+/**
+ * Project 7 Chat Room
+ * EE 422C submission by
+ * Aditya Kharosekar amk3587
+ * Rahul Jain rj8656
+ * Fall 2016
+ * Slip days used - 1 (on this project) (overall - 2)
+ * This is the second slip day that we have used this semester
+ */
 package assignment7;
 
 import javafx.application.Application;
@@ -36,7 +45,7 @@ public class ClientMain extends Application{
     public static void main(String[] args) {
         try {
             Map.addOrChange("default", "default"); //for testing purposes
-            Map.addOrChange("a", "default"); //for testing purposes
+            Map.addOrChange("a", "a"); //for testing purposes
             Map.addOrChange("b", "default"); //for testing purposes
             Map.addOrChange("c", "default"); //for testing purposes
             ClientMain.launch(ClientMain.class);

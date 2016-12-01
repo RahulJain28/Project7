@@ -1,7 +1,14 @@
 package assignment7;
-
+/**
+ * Project 7 Chat Room
+ * EE 422C submission by
+ * Aditya Kharosekar amk3587
+ * Rahul Jain rj8656
+ * Fall 2016
+ * Slip days used - 1 (on this project) (overall - 2)
+ * This is the second slip day that we have used this semester
+ */
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
